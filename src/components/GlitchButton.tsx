@@ -1,11 +1,12 @@
 
 import { cn } from "@/lib/utils";
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import { ButtonHTMLAttributes, forwardRef, useState } from "react";
 
 interface GlitchButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'purple' | 'blue' | 'pink' | 'green';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
+  glitchOnHover?: boolean;
 }
 
 export const GlitchButton = forwardRef<HTMLButtonElement, GlitchButtonProps>(({
@@ -13,9 +14,13 @@ export const GlitchButton = forwardRef<HTMLButtonElement, GlitchButtonProps>(({
   variant = 'default',
   size = 'md',
   fullWidth = false,
+  glitchOnHover = true,
   children,
   ...props
 }, ref) => {
+  const [isHovering, setIsHovering] = useState(false);
+  const [glitchOffset, setGlitchOffset] = useState({ x: 0, y: 0 });
+  
   const variantStyles = {
     default: 'border-white border bg-transparent hover:bg-white hover:text-cyber-black',
     purple: 'bg-cyber-purple border-cyber-purple text-white hover:bg-cyber-purple/80 shadow-neon-purple',
@@ -29,6 +34,32 @@ export const GlitchButton = forwardRef<HTMLButtonElement, GlitchButtonProps>(({
     md: 'px-5 py-2 text-base',
     lg: 'px-8 py-3 text-lg',
   };
+  
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+    if (glitchOnHover) {
+      // Trigger random glitch animations on hover
+      const glitchInterval = setInterval(() => {
+        setGlitchOffset({
+          x: (Math.random() * 4) - 2,
+          y: (Math.random() * 4) - 2
+        });
+      }, 100);
+      
+      (window as any).glitchTimeout = setTimeout(() => {
+        clearInterval(glitchInterval);
+        setGlitchOffset({ x: 0, y: 0 });
+      }, 500);
+    }
+  };
+  
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    setGlitchOffset({ x: 0, y: 0 });
+    if ((window as any).glitchTimeout) {
+      clearTimeout((window as any).glitchTimeout);
+    }
+  };
 
   return (
     <button
@@ -40,11 +71,31 @@ export const GlitchButton = forwardRef<HTMLButtonElement, GlitchButtonProps>(({
         sizeStyles[size],
         variantStyles[variant],
         fullWidth ? 'w-full' : '',
+        isHovering && glitchOnHover && 'animate-pulse',
         className
       )}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       {...props}
     >
-      <span className="relative z-10">{children}</span>
+      <span 
+        className="relative z-10"
+        style={{
+          transform: isHovering && glitchOnHover ? `translate(${glitchOffset.x}px, ${glitchOffset.y}px)` : 'none'
+        }}
+      >
+        {isHovering && glitchOnHover && (
+          <>
+            <span className="absolute top-0 left-0 text-cyber-blue opacity-70" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)', transform: 'translate(-1px, 0px)' }}>
+              {children}
+            </span>
+            <span className="absolute top-0 left-0 text-cyber-pink opacity-70" style={{ clipPath: 'polygon(0 45%, 100% 45%, 100% 100%, 0 100%)', transform: 'translate(1px, 0px)' }}>
+              {children}
+            </span>
+          </>
+        )}
+        {children}
+      </span>
     </button>
   );
 });

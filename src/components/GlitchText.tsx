@@ -7,20 +7,29 @@ interface GlitchTextProps {
   className?: string;
   glitchIntensity?: 'low' | 'medium' | 'high';
   tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
+  chromatic?: boolean;
 }
 
 export const GlitchText = ({ 
   text, 
   className, 
   glitchIntensity = 'medium',
-  tag: Component = 'h1' 
+  tag: Component = 'h1',
+  chromatic = false
 }: GlitchTextProps) => {
   const [isGlitching, setIsGlitching] = useState(false);
+  const [textOffset, setTextOffset] = useState({ x: 0, y: 0 });
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const triggerGlitch = () => {
       setIsGlitching(true);
+      
+      // Random position offset during glitch
+      setTextOffset({
+        x: (Math.random() * 4) - 2,
+        y: (Math.random() * 4) - 2
+      });
       
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -28,6 +37,7 @@ export const GlitchText = ({
       
       timeoutRef.current = setTimeout(() => {
         setIsGlitching(false);
+        setTextOffset({ x: 0, y: 0 });
         
         // Set random interval for next glitch
         const nextGlitchDelay = getRandomDelay();
@@ -66,7 +76,20 @@ export const GlitchText = ({
         className
       )}
       data-text={text}
+      style={{
+        transform: isGlitching ? `translate(${textOffset.x}px, ${textOffset.y}px)` : 'none'
+      }}
     >
+      {chromatic && isGlitching && (
+        <>
+          <span className="absolute top-0 left-0 text-cyber-pink opacity-70" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)', transform: 'translate(-2px, 1px)' }}>
+            {text}
+          </span>
+          <span className="absolute top-0 left-0 text-cyber-blue opacity-70" style={{ clipPath: 'polygon(0 45%, 100% 45%, 100% 100%, 0 100%)', transform: 'translate(2px, -1px)' }}>
+            {text}
+          </span>
+        </>
+      )}
       {text}
     </Component>
   );

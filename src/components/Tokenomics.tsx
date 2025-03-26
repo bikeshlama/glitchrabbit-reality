@@ -1,9 +1,32 @@
-
 import { GlitchText } from "./GlitchText";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const Tokenomics = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
   
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -79,22 +102,34 @@ export const Tokenomics = () => {
         ctx.lineWidth = 2;
         ctx.stroke();
         
+        // Add glow effect
+        if (animationProgress >= 1) {
+          ctx.shadowColor = segment.color;
+          ctx.shadowBlur = 10;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+        }
+        
         currentAngle += segmentAngle;
       });
       
-      // Increment animation progress
-      if (animationProgress < 1) {
+      // Increment animation progress only if section is visible
+      if (isVisible && animationProgress < 1) {
         animationProgress += 0.02;
         requestAnimationFrame(drawChart);
+      } else if (!isVisible) {
+        animationProgress = 0;
       }
     };
     
-    // Start animation
-    drawChart();
+    // Start animation when section becomes visible
+    if (isVisible) {
+      drawChart();
+    }
     
     // Add glitch effect occasionally
     const glitchInterval = setInterval(() => {
-      if (Math.random() > 0.7) {
+      if (Math.random() > 0.7 && isVisible) {
         canvas.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
         setTimeout(() => {
           canvas.style.filter = 'none';
@@ -103,32 +138,33 @@ export const Tokenomics = () => {
     }, 2000);
     
     return () => clearInterval(glitchInterval);
-  }, []);
+  }, [isVisible]);
 
   return (
-    <section id="tokenomics" className="py-24 relative overflow-hidden bg-cyber-dark">
+    <section id="tokenomics" ref={sectionRef} className="py-24 relative overflow-hidden bg-cyber-dark">
       <div className="scanline"></div>
       <div className="noise"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <p className="text-cyber-blue text-sm uppercase tracking-wider mb-2">Token Economics</p>
+          <p className={`text-cyber-blue text-sm uppercase tracking-wider mb-2 transition-all duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>Token Economics</p>
           <GlitchText 
             text="TOKENOMICS" 
             className="text-3xl sm:text-5xl font-bold"
             glitchIntensity="low"
+            chromatic={true}
           />
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Distribution Chart */}
-          <div className="order-2 lg:order-1">
-            <div className="glass-panel p-6 border border-cyber-blue/30 max-w-md mx-auto">
+          <div className={`order-2 lg:order-1 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
+            <div className="glass-panel p-6 border border-cyber-blue/30 max-w-md mx-auto hover:border-cyber-blue/60 transition-all duration-300">
               <div className="relative">
                 <canvas ref={canvasRef} className="mx-auto mb-6"></canvas>
                 
                 {/* Center logo */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl animate-floating">
                   🐰
                 </div>
               </div>
@@ -160,8 +196,8 @@ export const Tokenomics = () => {
           </div>
           
           {/* Token Info */}
-          <div className="order-1 lg:order-2 space-y-6">
-            <div className="glass-panel p-6 border border-cyber-blue/30">
+          <div className={`order-1 lg:order-2 space-y-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+            <div className="glass-panel p-6 border border-cyber-blue/30 hover:border-cyber-purple/60 transition-all duration-300 hover:shadow-neon-purple/20">
               <h3 className="text-lg text-gradient-blue font-bold mb-4">Token Information</h3>
               
               <div className="space-y-4">
@@ -194,7 +230,7 @@ export const Tokenomics = () => {
               </div>
             </div>
             
-            <div className="glass-panel p-6 border border-cyber-blue/30">
+            <div className="glass-panel p-6 border border-cyber-blue/30 hover:border-cyber-green/60 transition-all duration-300 hover:shadow-neon-green/20">
               <h3 className="text-lg text-gradient-blue font-bold mb-4">Token Utility</h3>
               
               <ul className="space-y-3">

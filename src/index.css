@@ -181,4 +181,76 @@
   .noise {
     @apply pointer-events-none absolute inset-0 bg-glitch-overlay opacity-[0.03] mix-blend-overlay;
   }
+  
+  /* New animation classes */
+  .data-flicker {
+    animation: data-flicker 2s infinite;
+  }
+  
+  .neon-pulse {
+    animation: neon-pulse 2s infinite alternate;
+  }
+  
+  .float {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  .hover-glitch:hover {
+    animation: micro-glitch 0.5s ease;
+  }
+  
+  @keyframes data-flicker {
+    0%, 100% { opacity: 1; }
+    8%, 12% { opacity: 0.5; }
+    10% { opacity: 0.2; }
+    15%, 100% { opacity: 1; }
+  }
+  
+  @keyframes neon-pulse {
+    from {
+      box-shadow: 0 0 5px theme('colors.cyber.purple'), 0 0 10px theme('colors.cyber.purple');
+    }
+    to {
+      box-shadow: 0 0 15px theme('colors.cyber.purple'), 0 0 30px theme('colors.cyber.purple');
+    }
+  }
+  
+  @keyframes micro-glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+  }
+  
+  @keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+  
+  @keyframes data-scroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+  }
+  
+  .cyber-grid {
+    position: relative;
+  }
+  
+  .cyber-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(155, 48, 255, 0.1) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(155, 48, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: -1;
+    animation: grid-fade 8s linear infinite;
+  }
+  
+  @keyframes grid-fade {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.1; }
+  }
 }
