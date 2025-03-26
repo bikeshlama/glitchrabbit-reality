@@ -28,6 +28,14 @@ export const NavBar = () => {
         <nav className="flex items-center justify-between">
           {/* Logo */}
           <a href="#" className="flex items-center">
+            <div className="h-10 w-10 mr-2 relative overflow-hidden">
+              <img 
+                src="/lovable-uploads/6b749a82-91f2-4fe4-8e61-157add88e8b0.png" 
+                alt="GlitchRabbit Logo" 
+                className="w-full h-full object-contain animate-pulse-slow"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyber-blue/20 to-transparent animate-shimmer"></div>
+            </div>
             <span className="text-xl font-bold text-gradient-purple tracking-wide">$GLITCH</span>
           </a>
 

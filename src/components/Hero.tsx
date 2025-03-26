@@ -139,7 +139,15 @@ export const Hero = () => {
           <div className={`w-64 h-64 mb-6 relative animate-floating transition-all duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-10'}`}>
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyber-purple to-cyber-blue opacity-50 blur-xl animate-pulse-glow"></div>
             <div className="relative w-full h-full rounded-full flex items-center justify-center bg-cyber-dark border border-cyber-purple overflow-hidden">
-              <span className="absolute text-8xl font-bold animate-float">🐰</span>
+              <div className="w-48 h-48 relative">
+                <img 
+                  src="/lovable-uploads/6b749a82-91f2-4fe4-8e61-157add88e8b0.png" 
+                  alt="GlitchRabbit" 
+                  className="w-full h-full object-contain animate-float"
+                />
+                {/* Glitch effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyber-blue/20 to-transparent animate-shimmer"></div>
+              </div>
               <div className="absolute inset-0 bg-glitch-overlay opacity-20 mix-blend-overlay"></div>
             </div>
           </div>

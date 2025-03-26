@@ -39,7 +39,25 @@ const Index = () => {
       }
     }, 5000);
     
-    return () => clearInterval(glitchInterval);
+    // Additional random glitch effect for logo images
+    const logoGlitchInterval = setInterval(() => {
+      if (Math.random() > 0.8) {
+        const logoImages = document.querySelectorAll('img[alt="GlitchRabbit Logo"], img[alt="GlitchRabbit"]');
+        const randomLogo = logoImages[Math.floor(Math.random() * logoImages.length)];
+        
+        if (randomLogo) {
+          randomLogo.classList.add('animate-micro-glitch');
+          setTimeout(() => {
+            randomLogo.classList.remove('animate-micro-glitch');
+          }, 500);
+        }
+      }
+    }, 3000);
+    
+    return () => {
+      clearInterval(glitchInterval);
+      clearInterval(logoGlitchInterval);
+    };
   }, [isLoaded]);
 
   return (
