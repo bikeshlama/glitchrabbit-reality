@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { GlitchButton } from "./GlitchButton";
+import { WalletButton } from "./WalletButton";
 import { cn } from "@/lib/utils";
 
 export const NavBar = () => {
@@ -46,7 +46,7 @@ export const NavBar = () => {
             <a href="#roadmap" className="text-sm text-white hover:text-cyber-purple transition-colors">ROADMAP</a>
             <a href="#community" className="text-sm text-white hover:text-cyber-purple transition-colors">COMMUNITY</a>
             <a href="#buy" className="text-sm text-white hover:text-cyber-purple transition-colors">HOW TO BUY</a>
-            <GlitchButton variant="purple" size="sm">CONNECT WALLET</GlitchButton>
+            <WalletButton variant="purple" size="sm" />
           </div>
 
           {/* Mobile Menu Button */}
@@ -110,7 +110,7 @@ export const NavBar = () => {
             >
               HOW TO BUY
             </a>
-            <GlitchButton variant="purple" size="sm" fullWidth>CONNECT WALLET</GlitchButton>
+            <WalletButton variant="purple" size="sm" fullWidth />
           </div>
         )}
       </div>
