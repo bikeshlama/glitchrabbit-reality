@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Cyberpunk theme colors
+				cyber: {
+					'black': '#0A0A0B',
+					'dark': '#121318',
+					'purple': '#9B30FF',
+					'pink': '#FF00FF',
+					'blue': '#00FFFF',
+					'green': '#00FF9F',
+					'yellow': '#FFE202',
 				}
 			},
 			borderRadius: {
@@ -70,26 +81,111 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				'pulse-glow': {
+					'0%, 100%': { 
+						opacity: '1',
+						filter: 'brightness(1) blur(0px)'
 					},
-					to: {
-						height: '0'
+					'50%': { 
+						opacity: '0.8',
+						filter: 'brightness(1.2) blur(3px)'
+					}
+				},
+				'glitch': {
+					'0%': {
+						clipPath: 'inset(40% 0 61% 0)',
+						transform: 'translate(-2px, 2px)',
+					},
+					'20%': {
+						clipPath: 'inset(92% 0 1% 0)',
+						transform: 'translate(1px, 1px)',
+					},
+					'40%': {
+						clipPath: 'inset(43% 0 1% 0)',
+						transform: 'translate(0, -1px)',
+					},
+					'60%': {
+						clipPath: 'inset(25% 0 58% 0)',
+						transform: 'translate(-1px, -1px)',
+					},
+					'80%': {
+						clipPath: 'inset(54% 0 7% 0)',
+						transform: 'translate(2px, -2px)',
+					},
+					'100%': {
+						clipPath: 'inset(58% 0 43% 0)',
+						transform: 'translate(-2px, 2px)',
+					},
+				},
+				'scanline': {
+					'0%': { transform: 'translateY(0)' },
+					'100%': { transform: 'translateY(100vh)' }
+				},
+				'floating': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-15px)' }
+				},
+				'cycle-background': {
+					'0%, 100%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' }
+				},
+				'fade-in-up': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'text-reveal': {
+					'0%': {
+						width: '0%',
+						opacity: '0'
+					},
+					'100%': {
+						width: '100%',
+						opacity: '1'
 					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+				'glitch': 'glitch 500ms infinite',
+				'scanline': 'scanline 6s linear infinite',
+				'floating': 'floating 3s ease-in-out infinite',
+				'cycle-background': 'cycle-background 10s ease infinite',
+				'fade-in-up': 'fade-in-up 0.8s ease-out',
+				'text-reveal': 'text-reveal 1s cubic-bezier(0.77, 0, 0.18, 1) forwards'
+			},
+			backgroundImage: {
+				'cyber-grid': 'linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)',
+				'gradient-radial': 'radial-gradient(circle, var(--tw-gradient-stops))',
+				'glitch-overlay': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAVVSURBVGhD7ZpNiBxFGIbfqu6Z/ZnZ7G7IhqwHEUFU1KhgxKjgQSQKQcGbBxEEFRFUFEEPHjyIFw+CF/+CBw+CiAoGQRBJwB+CJJiYsDFZs7vZ387szHR3le9rZzwk2Z5Oa7Y2lBce0l31fVXdT1V/1R1ja2tra2sXhTYlV4wrujLz8YL4Sm6e13eNrqnnXMFiqjBVQBfcEuO9EieFD8VTlYHDG8Uzcl+ICsXkGrOmucSCbArFBUFV8dPcZ1+JA84YiMslfVxsMQuSsRwrEy9YIYyAP8UvxcFmGuQa0wUmC+bJSISoBCsEVSFpvlhsJvZjMPxDMxvEK8jPNUvtfzNk6GNdF29CsRqoxo3G7yd3RZXPR23Zu1wsUCwLiuY1L4hRi1o0x2p9kNk0wVUXz8dXrYZzf7ZDMb4ymOSq5hUviCFrKZa0YJHDyXK7GqnXj51aE2OdP9YM7W9CiAGsXRBXrScmXhPJ9VfHYFWvXnm5MnDe6K5Yd1PYnQ58s19Cti94SQRaoyZcQ0wzc0UMVnp5/WiU+a+l9dpzEhLF6O9qJuJH7YgYX45OjIkgpJnNKG6a8A2NGGWY2k+ysaQzUrq6YaYnKLsaK/6oXBvF+/W8w7Qz7wjxkHhNvFdslrHi+SgTQbJ9zz75mIo3xNzIZS1U1zNTN7UuYwfOOFuL1/Rd9eXwF8ncLt4QbxabYTwHnRvmCNEbmgnEm0aN1kCzT4oui3CWEFeFbT9/WnXvU6Y3xZvEZhmfzwsiXM2NcpjcZ6RkpjGHJlWVCxERCtrZ+jPp4N5TUfLUcJS8e2o2+2Q+s5O9KprxHHRuuCDlODMVFHdYVPVTMVfVirZt2jdZKTtmdFXDsFsf6Zo+rEnxlMwTBdnZhQtSiNL1lrFXTWRiZvKnYkUYTvbGJRzP1bS9RlVreHn3iblL7R1xU8FH+4FoXBDJfKfSN69TjGVGpK4KyVPGXDUZl9aL4r3icsEajXr+nHzM5PtETWzpvGRvRaetpD/7vDDG/5FQ7ckXwoaZ0eZXzXQ1HsV9PuLc5vgZ6GpFoiTFG+n0HTNpYlyiO3nUVvX6JQaGJAaSvaMEh+FGYMRmptVMb54wyDWjGvHKhBEzdlwcVcCZ5OLbVDMnyJbiHYVsKCZFLOoJ0GlTpifp6gPCjD+XpFHxRtl1W03tUZq8XT6PCfaQdDZ4HtoF8ZboTibwQKzfqWPERrFoxFAkcknm6GxMGqoW/SNcJ9BzwgMiFvNImjGi9GzLqhCvamZXVNyKM+M9o5q5SLWzLZ3NXulb3KvLO4XEKy1XM9rlMIMlc1i66nPa9g/BgxjvFBdTWDPHlG0Hq13+YC3KV2Q7D1Sc+JpMtVJNzCZ/p2lnj+r2F91mHoC4D8uD2OMEIqgSmfEMdG7YIKHW9vF00HlG8S7J84Dyh2TLM2Y/IzkfaYqwRk0wecvBGxONzhFnvHkPfNGFNVKS/IrS+7FbPzOWVFtXdWJzf3+c/ZlknQOSt0uuJX40AZcLztg+ByUeSZJ5BjpX2CBUlQdBtbuutQrpSknDq0lvrHVr5+H9k99/F+fpXtmwQzRFPzJ+4+hE9nXXazcq8xwY+1r/rrjjHFHWacn0hMRrYm3YIPRMPAgu6pFjzPXvkRekAo53xA3BrQUPgr0Klzfex3VZrTwmvhRsJe/4N+F/hA3C44M9OV39OdHqO8YHxJuCVfmeYLfL80o7YmN9QTwgDmidxcB5xAuFHHxU4KH4kMiL/ry09aMNwlZl1M9La2tra2tr/8LY30Fd/4TaFx+gAAAAAElFTkSuQmCC")',
+			},
+			fontSize: {
+				'xxs': '0.625rem',
+			},
+			boxShadow: {
+				'neon-purple': '0 0 5px theme("colors.cyber.purple"), 0 0 20px theme("colors.cyber.purple")',
+				'neon-blue': '0 0 5px theme("colors.cyber.blue"), 0 0 20px theme("colors.cyber.blue")',
+				'neon-pink': '0 0 5px theme("colors.cyber.pink"), 0 0 20px theme("colors.cyber.pink")',
+				'neon-green': '0 0 5px theme("colors.cyber.green"), 0 0 20px theme("colors.cyber.green")',
+			},
+			backdropFilter: {
+				'none': 'none',
+				'blur': 'blur(20px)',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
